@@ -5,7 +5,9 @@
 
 .menu {
   background-color: maroon;
-  padding-top: 20%;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  gap: 10px;
 }
 
 .menu ul {
