@@ -32,7 +32,6 @@ h1 {
   align-content: center;
   margin-left: 50px;
   flex-grow: 9;
-  color: goldenrod;
 }
 
 .menu nav ul {
@@ -64,4 +63,8 @@ h1 {
 
 p {
   font-size: large;
+}
+
+a {
+  color: goldenrod;
 }
