@@ -8,7 +8,7 @@
         );
 
         echo '<div class="menu">';
-        echo    '<h1><a href="index.php">Accueil</a></h1>';
+        echo    '<h1><a href="index.php">Portfolio professionnel</a></h1>';
         echo        '<nav>';
         echo            '<ul>';
                             foreach($mymenu as $pageId => $pageParameters) {
