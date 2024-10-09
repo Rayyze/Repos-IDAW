@@ -7,12 +7,3 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <p>Heure courante :</p>
-        <br>
-        <p>
-            <?php 
-                echo date("H:i:s");
-            ?>
-        </p>
-    </body>
-</html> 
