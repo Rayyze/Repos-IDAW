@@ -2,17 +2,17 @@
     $currentPageId = 'accueil';
     $langID = 'fr';
 
-    if(isset($_GET['page'])) {
-        $currentPageId = $_GET['page'];
-    }
     if(isset($_GET['lang'])) {
         $langID = $_GET['lang'];
     }
+    if(isset($_GET['page'])) {
+        $currentPageId = $_GET['page'];
+    }
 
-    require_once($langID . "/template_header.php");
-    require_once($langID . "/template_menu.php");
+    require_once("template_header.php");
+    require_once("template_menu.php");
 
-    renderMenuToHTML($currentPageId);
+    renderMenuToHTML($currentPageId, $langID);
 ?>
 <section class="corps">
     <?php
