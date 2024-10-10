@@ -65,6 +65,10 @@ a {
   color: var(--text-color-dark);
 }
 
+li {
+  margin: inherit;
+}
+
 .form-container {
   display: flex;
   flex-direction: column;
@@ -76,7 +80,7 @@ a {
 }
 
 button {
-  color: var(--text-color-light);
+  color: black;
 }
 
 .full-panel {
@@ -89,12 +93,35 @@ button {
   justify-content: center;
 }
 
-.full-panel p {
+.full-panel *, .full-panel-extend *, .middle-panel * {
   margin: 0 20%;
+}
+
+.full-panel * *, .full-panel-extend * *, .middle-panel * * {
+  margin: 0 0;
 }
 
 .full-panel a {
   color: var(--text-emphasize);
+}
+
+.full-panel-extend {
+  background-color: var(--background-color);
+  color:var(--secondary-color);
+  width: 100%;
+  font-size: 200%;
+  align-content: center;
+  justify-content: center;
+}
+
+.middle-panel {
+  background-color: var(--background-color);
+  color:var(--secondary-color);
+  margin: 0 30%;
+  height: 500px;
+  font-size: 200%;
+  align-content: center;
+  justify-content: center;
 }
 
 .empty-panel {

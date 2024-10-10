@@ -5,6 +5,6 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined">
         <link rel="icon" href="../../rayyze.png">
         <title>Mon site pro</title>
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="style/style.css">
     </head>
     <body>
