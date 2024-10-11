@@ -5,7 +5,8 @@
                 'accueil' => 'Accueil',
                 'cv' => 'Cv',
                 'projets' => 'Mes Projets',
-                'contact' => 'Me contacter'
+                'contact' => 'Me contacter',
+                'lang' => 'en'
                 );
             $title = "Portfolio professionnel";
         } else {
@@ -13,7 +14,8 @@
                 'accueil' => 'Homepage',
                 'cv' => 'Cv',
                 'projets' => 'My Projects',
-                'contact' => 'Contact me'
+                'contact' => 'Contact me',
+                'lang' => 'fr'
                 );
             $title = "Professional portfolio";
         }
@@ -26,6 +28,8 @@
                             foreach($mymenu as $pageId => $pageParameters) {
                                 if ($currentPageId == $pageId) {
                                     echo "<li class=\"current_page\"><a href=\"?page=" . $pageId . "&lang=" . $langID . "\">" . $pageParameters . "</a></li>";
+                                } else if ($pageId == 'lang') {
+                                    echo "<li><a href=\"?page=" . $currentPageId . "&lang=" . $pageParameters . "\">" . $pageParameters . "</a></li>";
                                 } else {
                                     echo "<li><a href=\"?page=" . $pageId . "&lang=" . $langID . "\">" . $pageParameters . "</a></li>";
                                 }
