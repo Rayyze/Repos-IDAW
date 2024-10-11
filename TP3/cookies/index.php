@@ -1,4 +1,12 @@
+<!DOCTYPE html>
 <html>
+    <head>
+        <?php
+            if(isset($_COOKIE['style'])) {
+                echo "<link rel=\"stylesheet\" href=\"" . $_COOKIE['style'] . ".css\">";
+            }
+        ?>
+    </head>
     <body>
         <form id="style_form" action="cookie.php" method="GET">
             <select name="css">
@@ -9,12 +17,6 @@
         </form>
         <br>
         <br>
-        <?php
-            if(!isset($_COOKIE['style'])) {
-                echo "<p>Aucun style n'est selectioné";
-            } else {
-                echo "<p>Le " . $_COOKIE['style'] . " est selectioné";
-            }
-        ?>
+        <p>Bienvenu sur le site cookie</p>
     </body>
 </html>
