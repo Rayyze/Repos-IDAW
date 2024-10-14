@@ -8,6 +8,7 @@
         ?>
     </head>
     <body>
+        <?php phpinfo() ?>
         <form id="style_form" action="cookie.php" method="GET">
             <select name="css">
                 <option value="style1">style1</option>
