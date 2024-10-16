@@ -23,10 +23,10 @@
     $request->execute();
     while($user_row = $request->fetch(PDO::FETCH_OBJ)) {
         echo '<tr>';
-          echo "<form><td>" . $user_row->id . "</td>";
-          echo "<td> <input type=\"text\" id=\"login\" name=\"login\" value=" . $user_row->login . "><input type=\"hidden\" id=\"login\" name=\"login\" value=" . $user_row->login . "> </td>";
-          echo "<td> <input type=\"hidden\" id=\"login\" name=\"login\" value=" . $user_row->email . "> </td>";
-          echo "<td> </td></form>";
+          echo "<form action=\"handle_user.php\" method=\"POST\"><td><input type=\"hidden\" id=\"id\" name=\"id\" value=" . $user_row->id . ">" . $user_row->id . "</td>";
+          echo "<td> <input type=\"text\" id=\"new-login\" name=\"new-login\" value=" . $user_row->login . "><input type=\"hidden\" id=\"login\" name=\"login\" value=" . $user_row->login . "> </td>";
+          echo "<td> <input type=\"text\" id=\"new-email\" name=\"new-email\" value=" . $user_row->email . "><input type=\"hidden\" id=\"mail\" name=\"email\" value=" . $user_row->email . "> </td>";
+          echo "<td> <input type=\"submit\" value=\"modifier\" name=\"modify\"><input type=\"submit\" value=\"supprimer\" name=\"delete\"></td></form>";
         echo '<tr>';
     }
     echo '<table>';
