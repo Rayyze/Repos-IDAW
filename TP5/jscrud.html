@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+    <title>tabletest</title>
+    <style>
+        body {
+            margin-top: 5em;
+        }
+
+        .table {
+            margin-top: 100px;
+            margin-bottom: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Prenom</th>
+                <th scope="col">Date de naissance</th>
+                <th scope="col">Aime le cours Web</th>
+                <th scope="col">Remarques</th>
+                <th scope="col">CRUD</th>
+            </tr>
+        </thead>
+        <tbody id="studentsTableBody">
+        </tbody>
+    </table>
+    <form id="addStudentForm" action="" onsubmit="onFormSubmit();">
+        <div class="form-group row">
+            <label for="inputNom" class="col-sm-2 col-form-label">Nom*</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" id="inputNom" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputPrenom" class="col-sm-2 col-form-label">Prenom</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" id="inputPrenom">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputDate" class="col-sm-2 col-form-label">Date de naissance</label>
+            <div class="col-sm-3">
+                <input type="date" class="form-control" id="inputDate">
+            </div>
+        </div>
+        <div class="form-group col">
+            <label for="inputLikeClass" class="col-sm-2 col-form-label">Adore le cours</label>
+            <div class="col-sm-3">
+                <input type="checkbox" class="form-control" id="inputLikeClass">
+            </div>
+        </div>
+        <div class="form-group col">
+            <label for="inputRemarques" class="col-sm-2 col-form-label">Remarques</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" id="inputRemarques">
+            </div>
+        </div>
+        <div class="form-group row">
+            <span class="col-sm-2"></span>
+            <div class="col-sm-2">
+                <button type="submit" class="btn btn-primary form-control">Create</button>
+            </div>
+        </div>
+    </form>
+    <script>
+        let cnt = 0;
+        function onFormSubmit() {
+            event.preventDefault();
+            let nom = $("#inputNom").val();
+            let prenom = $("#inputPrenom").val();
+            let date = $("#inputDate").val();
+            let like_class = $("#inputLikeClass").val();
+            let remarques = $("#inputRemarques").val();
+            $("#studentsTableBody").append(`<tr id="${cnt}"><td  id="nom${cnt}">${nom}</td>
+                <td id="prenom${cnt}">${prenom}</td>
+                <td id="date${cnt}">${date}</td>
+                <td id="likeClass${cnt}">${like_class}</td>
+                <td id="remarques${cnt}">${remarques}</td>
+                <td><button type="button" id="delete-button" onclick="delete_entry(${cnt});"">Delete</button><button type="button" id="update-button" onclick="update_entry(${cnt});"">Update</button></td></tr>`);
+            cnt++;
+        }
+
+        function delete_entry(id) {
+            $(`#${id}`).remove();
+        }
+
+        function update_entry(id) {
+            let nom = $(`#nom${id}`).text();
+            let prenom = $(`#prenom${id}`).text();
+            let date = $(`#date${id}`).text();
+            let like_class = $(`#likeClass${id}`).text();
+            let remarques = $(`#remarques${id}`).text();
+            $(`#${id}`).html(`<form id="addStudentForm" action="" onsubmit="confirm_update();">
+                <td><input type="hidden" class="form-control" id="updateID" value="${id}"></td>
+                <td><input type="text" class="form-control" id="updateNom" value="${nom}"></td>
+                <td><input type="text" class="form-control" id="updatePrenom" value="${prenom}"></td>
+                <td><input type="date" class="form-control" id="updateDate" value="${date}"></td>
+                <td><input type="checkbox" class="form-control" id="updateLikeClass" value="${like_class}"></td>
+                <td><input type="text" class="form-control" id="updateRemarques" value="${remarques}"></td>
+                <td><button type="submit" class="btn btn-primary form-control">Confirm</button></td></form>`);
+        }
+
+        function confirm_update() {
+            event.preventDefault();
+            let id = $("#updateID").val();
+            let nom = $("#updateNom").val();
+            let prenom = $("#updatePrenom").val();
+            let date = $("#updateDate").val();
+            let like_class = $("#updateLikeClass").val();
+            let remarques = $("#updateRemarques").val();
+            $(`#${id}`).html(`<td>${nom}</td>
+                <td>${prenom}</td>
+                <td>${date}</td>
+                <td>${like_class}</td>
+                <td>${remarques}</td>
+                <td><button type="button" id="delete-button" onclick="delete_entry(${id});"">Delete</button><button type="button" id="update-button" onclick="update_entry(${id}, ${nom}, ${prenom}, ${date}, ${like_class}, ${remarques});"">Update</button></td>`);
+        }     
+    </script>
+</body>
+
+</html>
