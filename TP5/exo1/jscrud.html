@@ -78,7 +78,7 @@
             let nom = $("#inputNom").val();
             let prenom = $("#inputPrenom").val();
             let date = $("#inputDate").val();
-            let like_class = $("#inputLikeClass").val();
+            let like_class = $("#inputLikeClass").is(":checked") ? 'Oui' : 'Non';
             let remarques = $("#inputRemarques").val();
             $("#studentsTableBody").append(`<tr id="${cnt}"><td  id="nom${cnt}">${nom}</td>
                 <td id="prenom${cnt}">${prenom}</td>
@@ -97,32 +97,30 @@
             let nom = $(`#nom${id}`).text();
             let prenom = $(`#prenom${id}`).text();
             let date = $(`#date${id}`).text();
-            let like_class = $(`#likeClass${id}`).text();
+            let like_class = $(`#likeClass${id}`).text()==='Oui';
             let remarques = $(`#remarques${id}`).text();
-            $(`#${id}`).html(`<form id="addStudentForm" action="" onsubmit="confirm_update();">
-                <td><input type="hidden" class="form-control" id="updateID" value="${id}"></td>
+            $(`#${id}`).html(`
                 <td><input type="text" class="form-control" id="updateNom" value="${nom}"></td>
                 <td><input type="text" class="form-control" id="updatePrenom" value="${prenom}"></td>
                 <td><input type="date" class="form-control" id="updateDate" value="${date}"></td>
-                <td><input type="checkbox" class="form-control" id="updateLikeClass" value="${like_class}"></td>
+                <td><input type="checkbox" class="form-control" id="updateLikeClass" ${like_class ? 'checked' : ''}></td>
                 <td><input type="text" class="form-control" id="updateRemarques" value="${remarques}"></td>
-                <td><button type="submit" class="btn btn-primary form-control">Confirm</button></td></form>`);
+                <td><button type="button" class="btn btn-primary form-control" onclick="confirm_update(${id});">Confirm</button></td>`);
         }
 
-        function confirm_update() {
+        function confirm_update(id) {
             event.preventDefault();
-            let id = $("#updateID").val();
             let nom = $("#updateNom").val();
             let prenom = $("#updatePrenom").val();
             let date = $("#updateDate").val();
-            let like_class = $("#updateLikeClass").val();
+            let like_class = $("#updateLikeClass").is(":checked") ? 'Oui' : 'Non';
             let remarques = $("#updateRemarques").val();
-            $(`#${id}`).html(`<td>${nom}</td>
-                <td>${prenom}</td>
-                <td>${date}</td>
-                <td>${like_class}</td>
-                <td>${remarques}</td>
-                <td><button type="button" id="delete-button" onclick="delete_entry(${id});"">Delete</button><button type="button" id="update-button" onclick="update_entry(${id}, ${nom}, ${prenom}, ${date}, ${like_class}, ${remarques});"">Update</button></td>`);
+            $(`#${id}`).html(`<td  id="nom${id}">${nom}</td>
+                <td id="prenom${id}">${prenom}</td>
+                <td id="date${id}">${date}</td>
+                <td id="likeClass${id}">${like_class}</td>
+                <td id="remarques${id}">${remarques}</td>
+                <td><button type="button" id="delete-button" onclick="delete_entry(${id});"">Delete</button><button type="button" id="update-button" onclick="update_entry(${id});"">Update</button></td>`);
         }     
     </script>
 </body>
