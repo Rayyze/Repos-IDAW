@@ -4,32 +4,26 @@
 <head>
     <meta charset='utf-8'>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css" />
-    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css" />
     <title>tabletest</title>
     <style>
         body {
             margin-top: 5em;
         }
-
-        .table {
-            margin-top: 100px;
-            margin-bottom: 100px;
-        }
     </style>
 </head>
 
 <body>
-    <table id="table" class="table">
+    <p id="log-paragraph"></p>
+    <table id="table" class="display">
         <thead>
             <tr>
-                <th scope="col">Nom</th>
-                <th scope="col">Prenom</th>
-                <th scope="col">Date de naissance</th>
-                <th scope="col">Aime le cours Web</th>
-                <th scope="col">Remarques</th>
-                <th scope="col">CRUD</th>
+                <th scope="col">ID</th>
+                <th scope="col">Login</th>
+                <th scope="col">Email</th>
+                <th scope="col">Action</th>
             </tr>
         </thead>
         <tbody id="studentsTableBody">
@@ -56,48 +50,104 @@
         </div>
     </form>
     <script>
-        let cnt = 0;
+
+        $(document).ready( function () {
+            $('#table').DataTable({
+                ajax: {
+                    url: 'http://localhost/TP4/exo5/users.php',
+                    dataSrc: ''
+                },
+                columns: [
+                    { data: 'id', title: 'ID' },
+                    { data: 'login', title: 'Login' },
+                    { data: 'email', title: 'Email' },
+                    {
+                        data: null,
+                        title: 'Actions',
+                        render: function (data, type, row) {
+                            return `<button type="button" class="btn btn-danger" onclick="delete_entry(this)">Delete</button>
+                                    <button type="button" class="btn btn-danger" onclick="update_entry(this)">Update</button>`;
+                        }
+                    }
+                ]
+            });
+        });
+
         function onFormSubmit() {
             event.preventDefault();
             let login = $("#inputLogin").val();
             let mail = $("#inputMail").val();
-            $("#studentsTableBody").append(`<tr id="${cnt}">
-                <td  id="nom${cnt}">${login}</td>
-                <td id="prenom${cnt}">${mail}</td>
-                <td><button type="button" id="delete-button" onclick="delete_entry(${cnt});"">Delete</button><button type="button" id="update-button" onclick="update_entry(${cnt});"">Update</button></td></tr>`);
-            cnt++;
+            $.ajax({
+                url: `http://localhost/TP4/exo5/users.php/${login}/${mail}`,
+                method: 'POST',
+                success: function(response) {
+                    const parsedData = JSON.parse(response);
+                    $('#table').DataTable().row.add({
+                        id: parsedData.id,
+                        login: login,
+                        email: mail
+                    }).draw();
+                },
+                error: function(xhr, status, error) {
+                    $('#log-paragraph').html('Error: Could not create user');
+                }
+            });
         }
 
-        function delete_entry(id) {
-            $(`#${id}`).remove();
+        function delete_entry(button) {
+            let table = $('#table').DataTable();
+            let row = $(button).closest('tr');
+
+            let rowId = table.row(row).data().id;
+            table.row(row).remove().draw();
+
+            $.ajax({
+                url: `http://localhost/TP4/exo5/users.php/${rowId}`,
+                method: 'DELETE',
+                success: function(response) {
+                    $('#log-paragraph').html('User deleted successfully');
+                },
+                error: function(xhr, status, error) {
+                    $('#log-paragraph').html('Error: Could not delete user');
+                }
+            });
         }
 
-        function update_entry(id) {
-            let nom = $(`#nom${id}`).text();
-            let prenom = $(`#prenom${id}`).text();
-            let date = $(`#date${id}`).text();
-            let like_class = $(`#likeClass${id}`).text()==='Oui';
-            let remarques = $(`#remarques${id}`).text();
-            $(`#${id}`).html(`
-                <td><input type="text" class="form-control" id="updateNom" value="${nom}"></td>
-                <td><input type="text" class="form-control" id="updatePrenom" value="${prenom}"></td>
-                <td><button type="button" class="btn btn-primary form-control" onclick="confirm_update(${id});">Confirm</button></td>`);
+        function update_entry(button) {
+            let table = $('#table').DataTable();
+            let row = $(button).closest('tr');
+            let rowData = table.row(row).data();
+
+            row.children('td').eq(1).html(`<input type="text" id="editLogin" value="${rowData.login}">`);
+            row.children('td').eq(2).html(`<input type="text" id="editEmail" value="${rowData.email}">`);
+            
+            row.children('td').eq(3).html(`<button type="button" class="btn btn-success" onclick="confirm_update(this)">Save</button>`);
         }
 
-        function confirm_update(id) {
-            event.preventDefault();
-            let nom = $("#updateNom").val();
-            let prenom = $("#updatePrenom").val();
-            let date = $("#updateDate").val();
-            let like_class = $("#updateLikeClass").is(":checked") ? 'Oui' : 'Non';
-            let remarques = $("#updateRemarques").val();
-            $(`#${id}`).html(`<td  id="nom${id}">${nom}</td>
-                <td id="prenom${id}">${prenom}</td>
-                <td id="date${id}">${date}</td>
-                <td id="likeClass${id}">${like_class}</td>
-                <td id="remarques${id}">${remarques}</td>
-                <td><button type="button" id="delete-button" onclick="delete_entry(${id});"">Delete</button><button type="button" id="update-button" onclick="update_entry(${id});"">Update</button></td>`);
-        }     
+        function confirm_update(button) {
+            let table = $('#table').DataTable();
+            let row = $(button).closest('tr');
+            let login = row.find('#editLogin').val();
+            let email = row.find('#editEmail').val();
+            let rowId = table.row(row).data().id;
+
+            table.row(row).data({
+                id: rowId,
+                login: login,
+                email: email
+            }).draw();
+
+            $.ajax({
+                url: `http://localhost/TP4/exo5/users.php/${rowId}/${login}/${email}`,
+                method: 'PUT',
+                success: function(response) {
+                    $('#log-paragraph').html('User updated successfully');
+                },
+                error: function(xhr, status, error) {
+                    $('#log-paragraph').html('Error: Could not update user');
+                }
+            });
+        }
     </script>
 </body>
 
